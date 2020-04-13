@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as actions from './counter/counter.actions';
+import { AppStateInterface } from './interfaces/app-state.interface';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'redux-basic-app-angular';
+
+  counter: number;
+
+  constructor(
+    private store: Store<AppStateInterface>
+  ) {
+    this.store.select('counter').subscribe(counter => this.counter = counter );
+  }
+
+  increment() {
+    this.store.dispatch(actions.increment());
+  }
+
+  decrement() {
+    this.store.dispatch(actions.decrement());
+  }
 }
